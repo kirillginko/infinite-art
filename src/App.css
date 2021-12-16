@@ -4,14 +4,26 @@
   box-sizing: border-box;
 }
 .App{
-  text-align: center;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
   margin: 2rem;
+  margin-top: 4rem;
+  text-align: center;
 }
 .title{
-  font-size: 1rem;
-  padding: .5rem;
+  font-size: .8rem;
+  padding: 1rem;
 }
 .name{
-  font-size: .8rem;
-  padding-bottom: 1rem;
+  font-size: 1rem;
+}
+.card{
+  padding: .5rem;
+}
+.Title__text{
+  position: fixed;
+  text-align: left;
+  top: 0;
+  width: 100%;
 }
