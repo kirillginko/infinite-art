@@ -9,7 +9,6 @@ function App() {
   const [artResults, setArtResults] = useState([]);
   const [apiLinks, setApiLinks] = useState({});
   const [loading, setLoading] = useState(true);
-  const [element, setElement] = useState(null);
 
   useEffect(() => {
     const searchArt = async () => {
@@ -87,7 +86,7 @@ function App() {
       <h1 className="Title__text" className={loading ? "blur" : "Title__text"}>
         Art Infinite
       </h1>
-      <div className="App" ref={setElement}>
+      <div className="App">
         {loading ? (
           <Loader />
         ) : (
