@@ -2,7 +2,6 @@ import React from "react";
 import styled from "styled-components";
 
 const Loading = styled.div`
-  text-align: center;
   .lds-ellipsis {
     display: inline-block;
     position: relative;

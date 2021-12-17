@@ -6,6 +6,7 @@
 .App{
   display: flex;
   flex-direction: row;
+  justify-content: center;
   flex-wrap: wrap;
   margin: 2rem;
   margin-top: 4rem;
@@ -25,5 +26,25 @@
   position: fixed;
   text-align: left;
   top: 0;
-  width: 100%;
+  padding-left: 2rem;
+  cursor: pointer;
+  color: blue;
+}
+.blur{
+display: none;
+}
+.Title__text:hover{
+  filter: blur(3px);
+  transition: filter .6s ease-in-out;
+}
+
+@media only screen and (max-width: 700px) {
+  .Title__text {
+    position: fixed;
+    top: 0%;
+    left: 50%;
+    transform: translatex(-50%);
+    text-align: center;
+    padding: 0rem;
+  }
 }
