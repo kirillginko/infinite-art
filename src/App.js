@@ -1,21 +1,47 @@
-import React, { useState, useEffect, useRef } from "react";
-import axios from "axios";
-import ArtCard from "./components/ArtCard";
+import React, { useState, useEffect } from "react";
+import { Heading } from "./components/Heading";
 import Loader from "./components/Loader";
-import "./App.css";
-import InfiniteScroll from "react-infinite-scroll";
+import axios from "axios";
+import { gsap } from "gsap";
+import ScrollTrigger from "gsap/ScrollTrigger";
+import InfiniteScroll from "react-infinite-scroll-component";
+import ArtResults from "./components/ArtResults";
+import styled from "styled-components";
+import { createGlobalStyle } from "styled-components";
+gsap.registerPlugin(ScrollTrigger);
+
+const randomNumber = (min, max) => {
+  let numb = Math.random() * (max - min) + min;
+  let round = Math.round(numb);
+  return round;
+};
 
 function App() {
-  const [artResults, setArtResults] = useState([]);
   const [apiLinks, setApiLinks] = useState({});
+  const [artResults, setArtResults] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [page, setPage] = useState(randomNumber(1, 100));
+  const url = `https://api.artic.edu/api/v1/artworks/search?page=${page}&limit=12&q=Modern?`;
+
+  const topFunction = () => {
+    document.body.scrollTop = 0; // For Safari
+    document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+  };
 
   useEffect(() => {
-    const searchArt = async () => {
+    searchArt();
+  }, []);
+
+  useEffect(() => {
+    getImageData();
+  }, [apiLinks]);
+
+  const searchArt = async () => {
+    let mounted = true;
+    if (mounted) {
+      setPage(page + 1);
       try {
-        const res = await axios.get(
-          "https://api.artic.edu/api/v1/artworks/search?page=6&limit=12&q=Modern Art?"
-        );
+        const res = await axios.get(url);
         let results = res.data.data;
         let links = results.map((link) => {
           let apis = link.api_link;
@@ -25,12 +51,16 @@ function App() {
       } catch (err) {
         console.log(err);
       }
-    };
-    searchArt();
-  }, []);
+      return () => {
+        mounted = false;
+      };
+    }
+  };
+  console.log(apiLinks);
 
-  useEffect(() => {
-    const getImageData = async () => {
+  const getImageData = async () => {
+    let mounted = true;
+    if (apiLinks && mounted)
       try {
         const fields = "?fields=id,artist_display,title,image_id";
         const request1 = (await apiLinks[0]) + fields;
@@ -72,37 +102,93 @@ function App() {
           response11.data.data,
           response12.data.data,
         ];
-        setArtResults(results);
+        let all = new Set([...artResults, ...results]);
+        setArtResults([...all]);
         setLoading(false);
       } catch (err) {
-        console.error(err);
+        console.log(err);
       }
+    return () => {
+      mounted = false;
     };
-    getImageData();
-  }, [apiLinks]);
+  };
 
   return (
     <>
-      <h1 className="Title__text" className={loading ? "blur" : "Title__text"}>
-        Art Infinite
-      </h1>
-      <div className="App">
-        {loading ? (
-          <Loader />
-        ) : (
-          artResults?.map((art) => (
-            <ArtCard
-              id={art.id}
-              name={art.artist_display}
-              title={art.title}
-              image={art.image_id}
+      <Heading />
+      <GlobalStyle />
+      <InfiniteScroll
+        dataLength={artResults.length}
+        next={searchArt}
+        hasMore={true}
+        loader={<Loader />}
+        pullDownToRefreshThreshold="400px"
+      >
+        <WrapperImages>
+          {artResults?.map((art) => (
+            <ArtResults
+              id={art?.id}
+              name={art?.artist_display}
+              title={art?.title}
+              image={art?.image_id}
               loading={loading}
             />
-          ))
-        )}
-      </div>
+          ))}
+        </WrapperImages>
+      </InfiniteScroll>
+      <BTN onClick={() => topFunction()}>Top</BTN>
     </>
   );
 }
+
+// Style
+const GlobalStyle = createGlobalStyle`
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: sans-serif;
+  }
+  h1{
+    font-size: .8rem;
+  }
+  p{
+    font-size: .8rem;
+  }
+  img{
+    padding: .5rem;
+  }
+`;
+
+const WrapperImages = styled.section`
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  text-align: center;
+  margin: 2rem;
+  margin-top: 2rem;
+`;
+const BTN = styled.section`
+  position: fixed;
+  font-size: 3rem;
+  left: 0vw;
+  width: 100%;
+  bottom: 0;
+  color: black;
+  background-color: gray;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  text-align: center;
+  opacity: 0;
+  transition: all 0.3s ease-in-out;
+  cursor: pointer;
+  &:hover {
+    opacity: 1;
+  }
+`;
 
 export default App;
