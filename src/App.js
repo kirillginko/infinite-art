@@ -21,7 +21,7 @@ function App() {
   const [artResults, setArtResults] = useState([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(randomNumber(1, 100));
-  const url = `https://api.artic.edu/api/v1/artworks/search?page=${page}&limit=12&q=Modern?`;
+  const url = `https://api.artic.edu/api/v1/artworks/search?page=${page}&limit=18&q=Modern?`;
 
   const topFunction = () => {
     document.body.scrollTop = 0; // For Safari
@@ -75,6 +75,12 @@ function App() {
         const request10 = (await apiLinks[9]) + fields;
         const request11 = (await apiLinks[10]) + fields;
         const request12 = (await apiLinks[11]) + fields;
+        const request13 = (await apiLinks[12]) + fields;
+        const request14 = (await apiLinks[13]) + fields;
+        const request15 = (await apiLinks[14]) + fields;
+        const request16 = (await apiLinks[15]) + fields;
+        const request17 = (await apiLinks[16]) + fields;
+        const request18 = (await apiLinks[17]) + fields;
 
         const response1 = await axios.get(request1);
         const response2 = await axios.get(request2);
@@ -88,6 +94,12 @@ function App() {
         const response10 = await axios.get(request10);
         const response11 = await axios.get(request11);
         const response12 = await axios.get(request12);
+        const response13 = await axios.get(request13);
+        const response14 = await axios.get(request14);
+        const response15 = await axios.get(request15);
+        const response16 = await axios.get(request16);
+        const response17 = await axios.get(request17);
+        const response18 = await axios.get(request18);
         let results = [
           response1.data.data,
           response2.data.data,
@@ -101,6 +113,12 @@ function App() {
           response10.data.data,
           response11.data.data,
           response12.data.data,
+          response13.data.data,
+          response14.data.data,
+          response15.data.data,
+          response16.data.data,
+          response17.data.data,
+          response18.data.data,
         ];
         let all = new Set([...artResults, ...results]);
         setArtResults([...all]);
@@ -122,7 +140,7 @@ function App() {
         next={searchArt}
         hasMore={true}
         loader={<Loader />}
-        pullDownToRefreshThreshold="400px"
+        scrollThreshold={0.1}
       >
         <WrapperImages>
           {artResults?.map((art) => (
