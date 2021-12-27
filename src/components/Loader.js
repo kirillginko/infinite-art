@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 
 const Loading = styled.div`
+  text-align: center;
   .lds-ellipsis {
     display: inline-block;
     position: relative;
@@ -14,7 +15,7 @@ const Loading = styled.div`
     width: 13px;
     height: 13px;
     border-radius: 50%;
-    background: #222;
+    background: #192de2;
     animation-timing-function: cubic-bezier(0, 1, 1, 0);
   }
   .lds-ellipsis div:nth-child(1) {
@@ -59,7 +60,7 @@ const Loading = styled.div`
   }
 `;
 
-function Loader() {
+const Loader = () => {
   return (
     <Loading>
       <div className="lds-ellipsis">
@@ -70,6 +71,6 @@ function Loader() {
       </div>
     </Loading>
   );
-}
+};
 
 export default Loader;

@@ -1,14 +1,11 @@
 import React, { useState, useEffect } from "react";
+import axios from "axios";
+import InfiniteScroll from "react-infinite-scroll-component";
 import { Heading } from "./components/Heading";
 import Loader from "./components/Loader";
-import axios from "axios";
-import { gsap } from "gsap";
-import ScrollTrigger from "gsap/ScrollTrigger";
-import InfiniteScroll from "react-infinite-scroll-component";
 import ArtResults from "./components/ArtResults";
 import styled from "styled-components";
 import { createGlobalStyle } from "styled-components";
-gsap.registerPlugin(ScrollTrigger);
 
 const randomNumber = (min, max) => {
   let numb = Math.random() * (max - min) + min;
@@ -60,7 +57,7 @@ function App() {
 
   const getImageData = async () => {
     let mounted = true;
-    if (apiLinks && mounted)
+    if (mounted)
       try {
         const fields = "?fields=id,artist_display,title,image_id";
         const request1 = (await apiLinks[0]) + fields;
@@ -150,6 +147,7 @@ function App() {
               title={art?.title}
               image={art?.image_id}
               loading={loading}
+              className="box"
             />
           ))}
         </WrapperImages>
