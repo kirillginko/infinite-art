@@ -1,22 +1,18 @@
-import React, { useState, useEffect } from "react";
-import { gsap, Power3, Power4 } from "gsap";
-import ScrollTrigger from "gsap/ScrollTrigger";
+import React from "react";
+import { motion } from "framer-motion";
 
-gsap.registerPlugin(ScrollTrigger);
-
-function ArtResults({ id, name, title, image }) {
-  let tl = gsap.timeline({});
-
-  useEffect(() => {
-    tl.from(
-      ".box",
-      { x: -30, opacity: 1, ease: Power3.easeOut, duration: 1, stagger: 0.3 },
-      "+=1"
-    );
-  }, [image]);
-
+function ArtResults({ id, name, title, image, i }) {
   return (
-    <div className="card">
+    <motion.div
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true }}
+      variants={{
+        visible: { opacity: 1, translateX: 50 },
+        hidden: { opacity: 0, translateX: -50 },
+      }}
+      transition={{ duration: 0.3, delay: i * 0.2 }}
+    >
       {image && (
         <>
           <h1 className="name box">{name}</h1>
@@ -28,7 +24,7 @@ function ArtResults({ id, name, title, image }) {
           />
         </>
       )}
-    </div>
+    </motion.div>
   );
 }
 

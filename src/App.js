@@ -140,12 +140,13 @@ function App() {
         scrollThreshold={0.1}
       >
         <WrapperImages>
-          {artResults?.map((art) => (
+          {artResults?.map((art, i) => (
             <ArtResults
               id={art?.id}
               name={art?.artist_display}
               title={art?.title}
               image={art?.image_id}
+              i={i}
               loading={loading}
               className="box"
             />
