@@ -18,3 +18,9 @@
 //   };
 //   getArt();
 // }, []);
+
+const randomNumber = (min, max) => {
+  let numb = Math.random() * (max - min) + min;
+  let round = Math.round(numb);
+  return round;
+};

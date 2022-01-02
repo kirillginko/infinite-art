@@ -1,32 +1,47 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import InfiniteScroll from "react-infinite-scroll-component";
+import { db } from "./firebaseConfig";
+import { collection, getDocs, addDoc } from "firebase/firestore";
 import { Heading } from "./components/Heading";
 import Loader from "./components/Loader";
 import ArtResults from "./components/ArtResults";
 import styled from "styled-components";
 import { createGlobalStyle } from "styled-components";
 
-const randomNumber = (min, max) => {
-  let numb = Math.random() * (max - min) + min;
-  let round = Math.round(numb);
-  return round;
-};
-
 function App() {
   const [apiLinks, setApiLinks] = useState({});
   const [artResults, setArtResults] = useState([]);
+  const [artists, setArtists] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [page, setPage] = useState(randomNumber(1, 100));
+  const [page, setPage] = useState(0);
   const url = `https://api.artic.edu/api/v1/artworks/search?page=${page}&limit=18&q=Modern?`;
+  const artistsCollectionRef = collection(db, "artists");
 
   const topFunction = () => {
     document.body.scrollTop = 0; // For Safari
     document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
   };
 
+  const getArtists = async () => {
+    const data = await getDocs(artistsCollectionRef);
+    setArtists(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+  };
+
+  const createArtist = () => {
+    artResults.forEach((art) => {
+      addDoc(artistsCollectionRef, {
+        id: art.id,
+        title: art.title,
+        artist_display: art.artist_display,
+        image_id: art.image_id,
+      });
+    });
+  };
+
   useEffect(() => {
     searchArt();
+    getArtists();
   }, []);
 
   useEffect(() => {
@@ -45,6 +60,7 @@ function App() {
           return apis;
         });
         setApiLinks(links);
+        // createArtist();
       } catch (err) {
         console.log(err);
       }
@@ -127,6 +143,7 @@ function App() {
       mounted = false;
     };
   };
+  console.log(artists);
 
   return (
     <>
@@ -183,11 +200,10 @@ const GlobalStyle = createGlobalStyle`
 
 const WrapperImages = styled.section`
   display: flex;
-  justify-content: center;
   flex-wrap: wrap;
   text-align: center;
-  margin: 2rem;
   margin-top: 2rem;
+  overflow: hidden;
 `;
 const BTN = styled.section`
   position: fixed;
