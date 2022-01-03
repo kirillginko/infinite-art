@@ -9,7 +9,7 @@ const Header = styled.header`
 
 const H1 = styled.h1`
   font-family: "Oswald", sans-serif;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.7rem;
   font-size: 2rem;
 `;
 
