@@ -6,7 +6,7 @@ function ArtResults({ id, name, title, image, i }) {
     <motion.div
       initial="hidden"
       whileInView="visible"
-      viewport={{ once: true }}
+      viewport={{ once: false }}
       variants={{
         visible: { opacity: 1, translateX: 50 },
         hidden: { opacity: 0, translateX: -50 },
