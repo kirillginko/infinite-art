@@ -11,7 +11,7 @@ function ArtResults({ id, name, title, image, i }) {
         visible: { opacity: 1, translateX: 50 },
         hidden: { opacity: 0, translateX: -50 },
       }}
-      transition={{ duration: 0.3, delay: i * 0.2 }}
+      transition={{ duration: 0.3, delay: i * 0.06 }}
     >
       {image && (
         <>

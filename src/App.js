@@ -2,12 +2,14 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { db } from "./firebaseConfig";
+import { firebase } from "./firebaseConfig";
 import {
   collection,
   getDocs,
   addDoc,
   query,
   orderBy,
+  startAfter,
   limit,
 } from "firebase/firestore";
 import { Heading } from "./components/Heading";
@@ -18,6 +20,7 @@ import { createGlobalStyle } from "styled-components";
 
 function App() {
   const [artists, setArtists] = useState([]);
+  const [lastDoc, setLastDoc] = useState();
   const [loading, setLoading] = useState(true);
   const artistsCollectionRef = collection(db, "artists");
 
@@ -25,23 +28,47 @@ function App() {
     document.body.scrollTop = 0; // For Safari
     document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
   };
-
   const getArtists = async () => {
-    const data = await query(artistsCollectionRef, limit(12));
-    // const data = await getDocs(artistsCollectionRef, limit(12));
-    setArtists(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+    const q = query(artistsCollectionRef, orderBy("id", "asc"), limit(20));
+    const data = await getDocs(q);
+    const artistResults = data.docs.map((artist) => artist.data());
+    const uniqueIds = new Set();
+
+    const unique = artistResults.filter((element) => {
+      const isDuplicate = uniqueIds.has(element.id);
+
+      uniqueIds.add(element.id);
+
+      if (!isDuplicate) {
+        return true;
+      }
+    });
+    const lastDoc = data.docs[data.docs.length - 1];
+    setArtists(unique);
+    setLastDoc(lastDoc);
   };
 
-  // const createArtist = () => {
-  //   artResults.forEach((art) => {
-  //     addDoc(artistsCollectionRef, {
-  //       id: art.id,
-  //       title: art.title,
-  //       artist_display: art.artist_display,
-  //       image_id: art.image_id,
-  //     });
-  //   });
-  // };
+  const fetchArtists = async () => {
+    const q = query(
+      artistsCollectionRef,
+      orderBy("id", "asc"),
+      startAfter(lastDoc),
+      limit(20)
+    );
+    const data = await getDocs(q);
+    const artistResults = data.docs.map((artist) => artist.data());
+    const uniqueIds = new Set();
+    const unique = artistResults.filter((element) => {
+      const isDuplicate = uniqueIds.has(element.id);
+      uniqueIds.add(element.id);
+      if (!isDuplicate) {
+        return true;
+      }
+    });
+    const last = data.docs[data.docs.length - 1];
+    setArtists((listOfArtists) => [...listOfArtists, ...unique]);
+    setLastDoc(last);
+  };
 
   useEffect(() => {
     getArtists();
@@ -55,10 +82,10 @@ function App() {
       <GlobalStyle />
       <InfiniteScroll
         dataLength={artists.length}
-        next={getArtists}
+        next={fetchArtists}
         hasMore={true}
         loader={<Loader />}
-        scrollThreshold={0.1}
+        scrollThreshold={0.8}
       >
         <WrapperImages>
           {artists?.map((art, i) => (
@@ -67,6 +94,7 @@ function App() {
               name={art?.artist_display}
               title={art?.title}
               image={art?.image_id}
+              i={i}
               key={i}
               loading={loading}
               className="box"
