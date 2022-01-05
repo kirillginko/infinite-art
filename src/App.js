@@ -6,7 +6,6 @@ import { firebase } from "./firebaseConfig";
 import {
   collection,
   getDocs,
-  addDoc,
   query,
   orderBy,
   startAfter,
@@ -22,7 +21,7 @@ function App() {
   const [artists, setArtists] = useState([]);
   const [lastDoc, setLastDoc] = useState();
   const [loading, setLoading] = useState(true);
-  const artistsCollectionRef = collection(db, "artists");
+  const artistsCollectionRef = collection(db, "art");
 
   const topFunction = () => {
     document.body.scrollTop = 0; // For Safari
@@ -127,6 +126,10 @@ const GlobalStyle = createGlobalStyle`
   }
   img{
     padding: .5rem;
+    max-Height: 500px;
+    width: 100%;
+    object-fit: cover;
+    
   }
 `;
 
