@@ -6,6 +6,8 @@ import { firebase } from "./firebaseConfig";
 import {
   collection,
   getDocs,
+  getDoc,
+  doc,
   query,
   orderBy,
   startAfter,
@@ -28,7 +30,7 @@ function App() {
     document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
   };
   const getArtists = async () => {
-    const q = query(artistsCollectionRef, orderBy("id", "asc"), limit(20));
+    const q = query(artistsCollectionRef, orderBy("id", "desc"), limit(20));
     const data = await getDocs(q);
     const artistResults = data.docs.map((artist) => artist.data());
     const uniqueIds = new Set();
@@ -50,7 +52,7 @@ function App() {
   const fetchArtists = async () => {
     const q = query(
       artistsCollectionRef,
-      orderBy("id", "asc"),
+      orderBy("id", "desc"),
       startAfter(lastDoc),
       limit(20)
     );
@@ -101,7 +103,9 @@ function App() {
           ))}
         </WrapperImages>
       </InfiniteScroll>
-      <BTN onClick={() => topFunction()}>Top</BTN>
+      <BTN onClick={() => topFunction()}>
+        <Arrow></Arrow>
+      </BTN>
     </>
   );
 }
@@ -119,15 +123,17 @@ const GlobalStyle = createGlobalStyle`
     font-family: sans-serif;
   }
   h1{
-    font-size: .8rem;
+    font-family: "ObjectSans-Regular", sans-serif;
+    font-size: .9rem;
+    margin-top: 2rem;
   }
   p{
+    font-family: "ObjectSans-Regular", sans-serif;
+    margin-top: .3rem;
     font-size: .8rem;
   }
   img{
     padding: .5rem;
-    max-Height: 500px;
-    width: 100%;
     object-fit: cover;
     
   }
@@ -137,26 +143,40 @@ const WrapperImages = styled.section`
   display: flex;
   flex-wrap: wrap;
   text-align: center;
-  margin-top: 2rem;
+  margin-top: 7rem;
   overflow: hidden;
 `;
 const BTN = styled.section`
-  position: fixed;
-  font-size: 3rem;
-  left: 0vw;
-  width: 100%;
-  bottom: 0;
-  color: black;
-  background-color: gray;
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
-  text-align: center;
   opacity: 0;
+  /* background-color: #3b5df8; */
+  border: solid 1px #3b5df8;
+  width: 50px;
+  height: 50px;
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  border-radius: 5px;
   transition: all 0.3s ease-in-out;
+
   cursor: pointer;
   &:hover {
     opacity: 1;
   }
+`;
+const Arrow = styled.section`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  height: 20px;
+  width: 20px;
+  margin-top: -9px;
+  margin-left: -9px;
+  border: solid #3b5df8;
+  border-width: 0 3px 3px 0;
+  display: inline-block;
+  padding: 3px;
+  transform: rotate(-135deg);
+  -webkit-transform: rotate(-135deg);
 `;
 
 export default App;
