@@ -15,6 +15,7 @@ import Loader from "./components/Loader";
 import ArtResults from "./components/ArtResults";
 import styled from "styled-components";
 import { createGlobalStyle } from "styled-components";
+import { shuffle } from "./hooks";
 
 function App() {
   const [artists, setArtists] = useState([]);
@@ -23,19 +24,59 @@ function App() {
   const [loading, setLoading] = useState(true);
   const artistsCollectionRef = collection(db, "art");
   const sculptureCollectionRef = collection(db, "sculpture");
+  const order = ["asc", "desc"];
+  const params = ["title", "id", "image_id"];
 
   const topFunction = () => {
     document.body.scrollTop = 0; // For Safari
     document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
   };
 
+  const shuffle = (array) => {
+    let currentIndex = array.length,
+      randomIndex;
+
+    // While there remain elements to shuffle...
+    while (currentIndex != 0) {
+      // Pick a remaining element...
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex--;
+
+      // And swap it with the current element.
+      [array[currentIndex], array[randomIndex]] = [
+        array[randomIndex],
+        array[currentIndex],
+      ];
+    }
+
+    return array;
+  };
+
+  const getRandom = (list) => {
+    return list[Math.floor(Math.random() * list.length)];
+  };
+
   const getArtists = async () => {
-    const q = query(artistsCollectionRef, orderBy("id", "desc"), limit(10));
+    const q = query(
+      artistsCollectionRef,
+      orderBy(getRandom(params), getRandom(order)),
+      limit(10)
+    );
+    const q2 = query(
+      sculptureCollectionRef,
+      orderBy(getRandom(params), getRandom(order)),
+      limit(10)
+    );
+
     const data = await getDocs(q);
+    const data2 = await getDocs(q2);
+
     const artistResults = data.docs.map((artist) => artist.data());
+    const sculptureResults = data2.docs.map((sculpture) => sculpture.data());
+    const randomIndex = shuffle([...artistResults, ...sculptureResults]);
     const uniqueIds = new Set();
 
-    const unique = artistResults.filter((element) => {
+    const unique = randomIndex.filter((element) => {
       const isDuplicate = uniqueIds.has(element.id);
 
       uniqueIds.add(element.id);
@@ -44,40 +85,24 @@ function App() {
         return true;
       }
     });
+
     const lastDoc = data.docs[data.docs.length - 1];
+    const lastPage = data2.docs[data2.docs.length - 1];
     setArtists(unique);
     setLastDoc(lastDoc);
-  };
-  const getSculpture = async () => {
-    const q = query(sculptureCollectionRef, orderBy("id", "desc"), limit(10));
-    const data = await getDocs(q);
-    const sculptureResults = data.docs.map((sculpture) => sculpture.data());
-    const uniqueIds = new Set();
-
-    const unique = sculptureResults.filter((element) => {
-      const isDuplicate = uniqueIds.has(element.id);
-
-      uniqueIds.add(element.id);
-
-      if (!isDuplicate) {
-        return true;
-      }
-    });
-    const lastPage = data.docs[data.docs.length - 1];
-    setArtists((listOfSculptures) => [...listOfSculptures, ...unique]);
     setLastSculpture(lastPage);
   };
 
   const fetchArtists = async () => {
     const q = query(
       artistsCollectionRef,
-      orderBy("id", "desc"),
+      orderBy(getRandom(params), getRandom(order)),
       startAfter(lastDoc),
       limit(10)
     );
     const q2 = query(
       sculptureCollectionRef,
-      orderBy("id", "desc"),
+      orderBy(getRandom(params), getRandom(order)),
       startAfter(lastSculpture),
       limit(10)
     );
@@ -85,34 +110,24 @@ function App() {
     const data2 = await getDocs(q2);
     const artistResults = data.docs.map((artist) => artist.data());
     const sculptureResults = data.docs.map((sculpture) => sculpture.data());
+    const randomIndex = shuffle([...artistResults, ...sculptureResults]);
     const uniqueIds = new Set();
-    const unique = artistResults.filter((element) => {
+    const unique = randomIndex.filter((element) => {
       const isDuplicate = uniqueIds.has(element.id);
       uniqueIds.add(element.id);
       if (!isDuplicate) {
         return true;
       }
     });
-
-    const unique2 = sculptureResults.filter((element) => {
-      const isDuplicate = uniqueIds.has(element.id);
-      uniqueIds.add(element.id);
-      if (!isDuplicate) {
-        return true;
-      }
-    });
-
     const last = data.docs[data.docs.length - 1];
-    const lastPage = data.docs[data.docs.length - 1];
+    const lastPage = data2.docs[data2.docs.length - 1];
     setArtists((listOfArtists) => [...listOfArtists, ...unique]);
-    setArtists((listOfSculptures) => [...listOfSculptures, ...unique2]);
     setLastSculpture(lastPage);
     setLastDoc(last);
   };
 
   useEffect(() => {
     getArtists();
-    getSculpture();
   }, []);
 
   console.log(artists);
@@ -166,9 +181,6 @@ const GlobalStyle = createGlobalStyle`
     font-family: 'Supply-UltraLight', sans-serif;
     font-size: .75rem;
     margin-top: 1rem;
-    @media screen and (max-width: 500px) {
-    font-size: .8rem;
-    }
   }
   p{
     font-family: 'Supply-UltraLight', sans-serif;
