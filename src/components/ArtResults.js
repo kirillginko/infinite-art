@@ -25,7 +25,7 @@ function ArtResults({ id, name, title, image, i }) {
         <>
           <h1 className="name box">{name}</h1>
           <p className="title box">{title}</p>
-          <img src={source} alt={id} onerror="this.onerror = null" />
+          <img src={source} alt={id} onError={null} />
         </>
       )}
     </motion.div>

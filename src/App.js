@@ -21,9 +21,11 @@ function App() {
   const [artists, setArtists] = useState([]);
   const [lastDoc, setLastDoc] = useState();
   const [lastSculpture, setLastSculpture] = useState();
+  const [lastPhoto, setLastPhoto] = useState();
   const [loading, setLoading] = useState(true);
   const artistsCollectionRef = collection(db, "art");
   const sculptureCollectionRef = collection(db, "sculpture");
+  const photoCollectionRef = collection(db, "photo");
   const order = ["asc", "desc"];
   const params = ["title", "id", "image_id"];
 
@@ -38,13 +40,24 @@ function App() {
       orderBy(getRandom(params), getRandom(order)),
       limit(10)
     );
+    const q3 = query(
+      photoCollectionRef,
+      orderBy(getRandom(params), getRandom(order)),
+      limit(10)
+    );
 
     const data = await getDocs(q);
     const data2 = await getDocs(q2);
+    const data3 = await getDocs(q3);
 
     const artistResults = data.docs.map((artist) => artist.data());
     const sculptureResults = data2.docs.map((sculpture) => sculpture.data());
-    const randomIndex = shuffle([...artistResults, ...sculptureResults]);
+    const photoResults = data3.docs.map((photo) => photo.data());
+    const randomIndex = shuffle([
+      ...artistResults,
+      ...sculptureResults,
+      ...photoResults,
+    ]);
     const uniqueIds = new Set();
 
     const unique = randomIndex.filter((element) => {
@@ -59,9 +72,11 @@ function App() {
 
     const lastDoc = data.docs[data.docs.length - 1];
     const lastPage = data2.docs[data2.docs.length - 1];
+    const lastPage2 = data3.docs[data2.docs.length - 1];
     setArtists(unique);
     setLastDoc(lastDoc);
     setLastSculpture(lastPage);
+    setLastPhoto(lastPage2);
     setLoading(false);
   };
 
@@ -79,11 +94,24 @@ function App() {
       startAfter(lastSculpture),
       limit(10)
     );
+    const q3 = query(
+      photoCollectionRef,
+      orderBy(getRandom(params), getRandom(order)),
+      startAfter(lastPhoto),
+      limit(10)
+    );
     const data = await getDocs(q);
     const data2 = await getDocs(q2);
+    const data3 = await getDocs(q3);
+
     const artistResults = data.docs.map((artist) => artist.data());
     const sculptureResults = data.docs.map((sculpture) => sculpture.data());
-    const randomIndex = shuffle([...artistResults, ...sculptureResults]);
+    const photoResults = data3.docs.map((photo) => photo.data());
+    const randomIndex = shuffle([
+      ...artistResults,
+      ...sculptureResults,
+      ...photoResults,
+    ]);
     const uniqueIds = new Set();
     const unique = randomIndex.filter((element) => {
       const isDuplicate = uniqueIds.has(element.id);
@@ -94,9 +122,11 @@ function App() {
     });
     const last = data.docs[data.docs.length - 1];
     const lastPage = data2.docs[data2.docs.length - 1];
+    const lastPage2 = data2.docs[data2.docs.length - 1];
     setArtists((listOfArtists) => [...listOfArtists, ...unique]);
     setLastSculpture(lastPage);
     setLastDoc(last);
+    setLastPhoto(lastPage2);
     setLoading(false);
   };
 
@@ -115,7 +145,7 @@ function App() {
         next={fetchArtists}
         hasMore={true}
         loader={<Loader />}
-        scrollThreshold={0.8}
+        scrollThreshold={0.1}
       >
         <WrapperImages>
           {artists?.map((art, i) => (
@@ -184,8 +214,7 @@ const WrapperImages = styled.section`
 `;
 const BTN = styled.section`
   opacity: 0;
-  /* background-color: #3b5df8; */
-  border: solid 1px #3b5df8;
+  border: solid 1px #002efc;
   width: 50px;
   height: 50px;
   position: fixed;
@@ -207,7 +236,7 @@ const Arrow = styled.section`
   width: 20px;
   margin-top: -9px;
   margin-left: -9px;
-  border: solid #3b5df8;
+  border: solid #002efc;
   border-width: 0 3px 3px 0;
   display: inline-block;
   padding: 3px;
