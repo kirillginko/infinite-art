@@ -17,8 +17,7 @@ const Header = styled.header`
   }
   @media screen and (max-width: 800px) {
     position: relative;
-    max-width: 70rem;
-    margin: 2rem auto;
+    margin: 2rem 4rem;
     text-align: center;
   }
 `;
@@ -29,7 +28,7 @@ const H1 = styled.h1`
   font-size: 3rem;
   font-weight: 600;
   letter-spacing: -3px;
-
+  max-width: 100rem;
   @media screen and (max-width: 800px) {
     font-size: 2rem;
   }

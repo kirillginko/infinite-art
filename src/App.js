@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { db } from "./firebaseConfig";
-import { firebase } from "./firebaseConfig";
 import {
   collection,
   getDocs,
@@ -13,9 +12,10 @@ import {
 import { Heading } from "./components/Heading";
 import Loader from "./components/Loader";
 import ArtResults from "./components/ArtResults";
+import WebsiteInfo from "./components/WebsiteInfo";
 import styled from "styled-components";
 import { createGlobalStyle } from "styled-components";
-import { shuffle } from "./hooks";
+import { topFunction, shuffle, getRandom } from "./hooks";
 
 function App() {
   const [artists, setArtists] = useState([]);
@@ -26,35 +26,6 @@ function App() {
   const sculptureCollectionRef = collection(db, "sculpture");
   const order = ["asc", "desc"];
   const params = ["title", "id", "image_id"];
-
-  const topFunction = () => {
-    document.body.scrollTop = 0; // For Safari
-    document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
-  };
-
-  const shuffle = (array) => {
-    let currentIndex = array.length,
-      randomIndex;
-
-    // While there remain elements to shuffle...
-    while (currentIndex != 0) {
-      // Pick a remaining element...
-      randomIndex = Math.floor(Math.random() * currentIndex);
-      currentIndex--;
-
-      // And swap it with the current element.
-      [array[currentIndex], array[randomIndex]] = [
-        array[randomIndex],
-        array[currentIndex],
-      ];
-    }
-
-    return array;
-  };
-
-  const getRandom = (list) => {
-    return list[Math.floor(Math.random() * list.length)];
-  };
 
   const getArtists = async () => {
     const q = query(
@@ -91,9 +62,11 @@ function App() {
     setArtists(unique);
     setLastDoc(lastDoc);
     setLastSculpture(lastPage);
+    setLoading(false);
   };
 
   const fetchArtists = async () => {
+    setLoading(true);
     const q = query(
       artistsCollectionRef,
       orderBy(getRandom(params), getRandom(order)),
@@ -124,13 +97,14 @@ function App() {
     setArtists((listOfArtists) => [...listOfArtists, ...unique]);
     setLastSculpture(lastPage);
     setLastDoc(last);
+    setLoading(false);
   };
 
   useEffect(() => {
     getArtists();
   }, []);
 
-  console.log(artists);
+  console.log(loading);
 
   return (
     <>
@@ -158,6 +132,7 @@ function App() {
           ))}
         </WrapperImages>
       </InfiniteScroll>
+      <WebsiteInfo />
       <BTN onClick={() => topFunction()}>
         <Arrow></Arrow>
       </BTN>
@@ -181,16 +156,19 @@ const GlobalStyle = createGlobalStyle`
     font-family: 'Supply-UltraLight', sans-serif;
     font-size: .75rem;
     margin-top: 1rem;
+    max-width: 25rem;
   }
   p{
     font-family: 'Supply-UltraLight', sans-serif;
     margin-top: .3rem;
     font-size: .8rem;
+    max-width: 25rem;
   }
   img{
     padding: .5rem;
-    object-fit: cover;
-    
+    @media screen and (max-width: 800px) {
+    padding: 0rem;
+  }
   }
 `;
 
@@ -198,7 +176,7 @@ const WrapperImages = styled.section`
   display: flex;
   flex-wrap: wrap;
   text-align: center;
-  margin-top: 10rem;
+  margin-top: 12rem;
   overflow: hidden;
   @media screen and (max-width: 800px) {
     margin-top: 0rem;

@@ -2,6 +2,8 @@ import React from "react";
 import { motion } from "framer-motion";
 
 function ArtResults({ id, name, title, image, i }) {
+  const source = `https://www.artic.edu/iiif/2/${image}/full/400,/0/default.jpg`;
+
   return (
     <motion.div
       initial="hidden"
@@ -23,11 +25,7 @@ function ArtResults({ id, name, title, image, i }) {
         <>
           <h1 className="name box">{name}</h1>
           <p className="title box">{title}</p>
-          <img
-            src={`https://www.artic.edu/iiif/2/${image}/full/400,/0/default.jpg`}
-            alt={id}
-            className="box"
-          />
+          <img src={source} alt={id} onerror="this.onerror = null" />
         </>
       )}
     </motion.div>
