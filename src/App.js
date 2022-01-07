@@ -1,13 +1,10 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { db } from "./firebaseConfig";
 import { firebase } from "./firebaseConfig";
 import {
   collection,
   getDocs,
-  getDoc,
-  doc,
   query,
   orderBy,
   startAfter,
@@ -22,15 +19,18 @@ import { createGlobalStyle } from "styled-components";
 function App() {
   const [artists, setArtists] = useState([]);
   const [lastDoc, setLastDoc] = useState();
+  const [lastSculpture, setLastSculpture] = useState();
   const [loading, setLoading] = useState(true);
   const artistsCollectionRef = collection(db, "art");
+  const sculptureCollectionRef = collection(db, "sculpture");
 
   const topFunction = () => {
     document.body.scrollTop = 0; // For Safari
     document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
   };
+
   const getArtists = async () => {
-    const q = query(artistsCollectionRef, orderBy("id", "desc"), limit(20));
+    const q = query(artistsCollectionRef, orderBy("id", "desc"), limit(10));
     const data = await getDocs(q);
     const artistResults = data.docs.map((artist) => artist.data());
     const uniqueIds = new Set();
@@ -48,16 +48,43 @@ function App() {
     setArtists(unique);
     setLastDoc(lastDoc);
   };
+  const getSculpture = async () => {
+    const q = query(sculptureCollectionRef, orderBy("id", "desc"), limit(10));
+    const data = await getDocs(q);
+    const sculptureResults = data.docs.map((sculpture) => sculpture.data());
+    const uniqueIds = new Set();
+
+    const unique = sculptureResults.filter((element) => {
+      const isDuplicate = uniqueIds.has(element.id);
+
+      uniqueIds.add(element.id);
+
+      if (!isDuplicate) {
+        return true;
+      }
+    });
+    const lastPage = data.docs[data.docs.length - 1];
+    setArtists((listOfSculptures) => [...listOfSculptures, ...unique]);
+    setLastSculpture(lastPage);
+  };
 
   const fetchArtists = async () => {
     const q = query(
       artistsCollectionRef,
       orderBy("id", "desc"),
       startAfter(lastDoc),
-      limit(20)
+      limit(10)
+    );
+    const q2 = query(
+      sculptureCollectionRef,
+      orderBy("id", "desc"),
+      startAfter(lastSculpture),
+      limit(10)
     );
     const data = await getDocs(q);
+    const data2 = await getDocs(q2);
     const artistResults = data.docs.map((artist) => artist.data());
+    const sculptureResults = data.docs.map((sculpture) => sculpture.data());
     const uniqueIds = new Set();
     const unique = artistResults.filter((element) => {
       const isDuplicate = uniqueIds.has(element.id);
@@ -66,13 +93,26 @@ function App() {
         return true;
       }
     });
+
+    const unique2 = sculptureResults.filter((element) => {
+      const isDuplicate = uniqueIds.has(element.id);
+      uniqueIds.add(element.id);
+      if (!isDuplicate) {
+        return true;
+      }
+    });
+
     const last = data.docs[data.docs.length - 1];
+    const lastPage = data.docs[data.docs.length - 1];
     setArtists((listOfArtists) => [...listOfArtists, ...unique]);
+    setArtists((listOfSculptures) => [...listOfSculptures, ...unique2]);
+    setLastSculpture(lastPage);
     setLastDoc(last);
   };
 
   useEffect(() => {
     getArtists();
+    getSculpture();
   }, []);
 
   console.log(artists);
@@ -123,12 +163,15 @@ const GlobalStyle = createGlobalStyle`
     font-family: sans-serif;
   }
   h1{
-    font-family: "ObjectSans-Regular", sans-serif;
-    font-size: .9rem;
-    margin-top: 2rem;
+    font-family: 'Supply-UltraLight', sans-serif;
+    font-size: .75rem;
+    margin-top: 1rem;
+    @media screen and (max-width: 500px) {
+    font-size: .8rem;
+    }
   }
   p{
-    font-family: "ObjectSans-Regular", sans-serif;
+    font-family: 'Supply-UltraLight', sans-serif;
     margin-top: .3rem;
     font-size: .8rem;
   }
@@ -143,8 +186,11 @@ const WrapperImages = styled.section`
   display: flex;
   flex-wrap: wrap;
   text-align: center;
-  margin-top: 7rem;
+  margin-top: 10rem;
   overflow: hidden;
+  @media screen and (max-width: 800px) {
+    margin-top: 0rem;
+  }
 `;
 const BTN = styled.section`
   opacity: 0;

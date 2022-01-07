@@ -6,6 +6,19 @@
   font-family: 'ObjectSans-Regular';
   src: local('ObjectSans-Regular'), url(./fonts/ObjectSans-Regular.woff2) format('woff2');
 }
+@font-face {
+  font-family: 'Supply-UltraLight';
+  src: local('Supply-UltraLight'), url(./fonts/Supply-UltraLight.woff2) format('woff2');
+}
+@font-face {
+  font-family: 'Supply-Regular';
+  src: local('Supply-Regular'), url(./fonts/Supply-Regular.woff2) format('woff2');
+}
+@font-face {
+  font-family: 'CharlevoixPro-Bold';
+  src: local('CharlevoixPro-Bold'), url(./fonts/src/fonts/CharlevoixPro-Bold.woff2) format('woff2');
+}
+
 
 
 /* *{

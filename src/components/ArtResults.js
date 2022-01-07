@@ -8,8 +8,14 @@ function ArtResults({ id, name, title, image, i }) {
       whileInView="visible"
       viewport={{ once: false }}
       variants={{
-        visible: { opacity: 1, translateX: 50 },
-        hidden: { opacity: 0, translateX: -50 },
+        visible: {
+          opacity: 1,
+          translateX: 50,
+        },
+        hidden: {
+          opacity: 0,
+          translateX: -50,
+        },
       }}
       transition={{ duration: 0.4, delay: i * 0.06 }}
     >

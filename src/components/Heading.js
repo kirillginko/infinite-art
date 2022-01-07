@@ -13,29 +13,43 @@ const Header = styled.header`
   cursor: pointer;
   transition: filter 0.6s ease-in-out;
   &:hover {
-    filter: blur(1px);
+    filter: blur(1.2px);
+  }
+  @media screen and (max-width: 800px) {
+    position: relative;
+    max-width: 70rem;
+    margin: 2rem auto;
+    text-align: center;
   }
 `;
 
 const H1 = styled.h1`
-  font-family: "ObjectSans-Regular", sans-serif;
+  font-family: "CharlevoixPro-Bold", sans-serif;
   margin-bottom: 0.5rem;
   font-size: 3rem;
+  font-weight: 600;
   letter-spacing: -3px;
+
+  @media screen and (max-width: 800px) {
+    font-size: 2rem;
+  }
+`;
+const P1 = styled.p`
+  font-family: "ObjectSans-Regular", sans-serif;
+  font-size: 0.8rem;
+  @media screen and (max-width: 800px) {
+    font-size: 0.75rem;
+  }
 `;
 
 export const Heading = () => {
   return (
     <Header>
       <H1>INFINITE GALLERY</H1>
-      <p>
+      <P1>
         An infinitely generating art gallery <br />
         powered by the Art Institute of Chicago
-      </p>
-      {/* <form>
-        <Input type="text" placeholder="Search photos" />
-        <Button>Search</Button>
-      </form> */}
+      </P1>
     </Header>
   );
 };
