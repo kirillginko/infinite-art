@@ -23,11 +23,11 @@ const Header = styled.header`
 `;
 
 const H1 = styled.h1`
-  font-family: "CharlevoixPro-Bold", sans-serif;
+  font-family: "Swiss721BT-BlackCondensed", sans-serif;
   margin-bottom: 0.5rem;
   font-size: 3rem;
-  font-weight: 600;
-  letter-spacing: -3px;
+  font-weight: bold;
+  letter-spacing: -1px;
   max-width: 100rem;
   @media screen and (max-width: 800px) {
     font-size: 2rem;

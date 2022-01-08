@@ -145,7 +145,7 @@ function App() {
         next={fetchArtists}
         hasMore={true}
         loader={<Loader />}
-        scrollThreshold={0.1}
+        scrollThreshold={0.2}
       >
         <WrapperImages>
           {artists?.map((art, i) => (
@@ -180,7 +180,6 @@ const GlobalStyle = createGlobalStyle`
   }
 
   body {
-    font-family: sans-serif;
   }
   h1{
     font-family: 'Supply-UltraLight', sans-serif;
