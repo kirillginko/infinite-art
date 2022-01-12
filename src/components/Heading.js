@@ -1,19 +1,23 @@
 import React from "react";
 import styled from "styled-components";
+import { motion } from "framer-motion";
 
-const Header = styled.header`
+const Header = styled(motion.header)`
   position: fixed;
   top: 0;
   left: 0;
   max-width: 70rem;
-  margin-left: 1rem;
+  margin-left: 3.6rem;
   color: #002efc;
   text-align: left;
   z-index: 10;
-  cursor: pointer;
+  cursor: grab;
   transition: filter 0.6s ease-in-out;
   &:hover {
     filter: blur(1.2px);
+  }
+  &:active {
+    cursor: grabbing;
   }
   @media screen and (max-width: 800px) {
     position: relative;
@@ -22,32 +26,68 @@ const Header = styled.header`
   }
 `;
 
-const H1 = styled.h1`
-  font-family: "Swiss721BT-BlackCondensed", sans-serif;
-  margin-bottom: 0.5rem;
-  font-size: 3rem;
-  font-weight: bold;
+const H1 = styled(motion.h1)`
+  font-family: "ABCMarfa-Light-Trial", sans-serif;
+  margin-bottom: 0.8rem;
+  font-size: 2.5rem;
+  font-weight: 100;
   letter-spacing: -1px;
   max-width: 100rem;
   @media screen and (max-width: 800px) {
     font-size: 2rem;
   }
 `;
-const P1 = styled.p`
+const P1 = styled(motion.p)`
   font-family: "ObjectSans-Regular", sans-serif;
-  font-size: 0.8rem;
+  font-size: 0.7rem;
+  margin-left: 0.1rem;
   @media screen and (max-width: 800px) {
-    font-size: 0.75rem;
+    font-size: 0.7rem;
+    margin-left: 0rem;
+  }
+`;
+const Span = styled.span`
+  color: Red;
+  font-weight: bold;
+  @media screen and (max-width: 800px) {
+    color: Red;
+    font-weight: 100;
   }
 `;
 
 export const Heading = () => {
   return (
-    <Header>
-      <H1>INFINITE GALLERY</H1>
-      <P1>
+    <Header
+      as={motion.header}
+      drag
+      dragConstraints={{
+        top: -2,
+        left: -2,
+        right: 1300,
+        bottom: 750,
+      }}
+      dragTransition={{
+        min: 0,
+        max: 100,
+        bounceDamping: 20,
+      }}
+    >
+      <H1
+        as={motion.h1}
+        initial={{ opacity: 0, y: -100 }}
+        animate={{ y: 10, opacity: 1 }}
+        transition={{
+          ease: "linear",
+          delay: 0.5,
+          y: { type: "spring", stiffness: 200 },
+          default: { duration: 0.5 },
+        }}
+      >
+        INFINITY GALLERY
+      </H1>
+      <P1 as={motion.p}>
         An infinitely generating art gallery <br />
-        powered by the Art Institute of Chicago
+        powered by The Art Institute of Chicago
       </P1>
     </Header>
   );

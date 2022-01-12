@@ -105,7 +105,7 @@ function App() {
     const data3 = await getDocs(q3);
 
     const artistResults = data.docs.map((artist) => artist.data());
-    const sculptureResults = data.docs.map((sculpture) => sculpture.data());
+    const sculptureResults = data2.docs.map((sculpture) => sculpture.data());
     const photoResults = data3.docs.map((photo) => photo.data());
     const randomIndex = shuffle([
       ...artistResults,
@@ -145,7 +145,7 @@ function App() {
         next={fetchArtists}
         hasMore={true}
         loader={<Loader />}
-        scrollThreshold={0.2}
+        scrollThreshold={0.8}
       >
         <WrapperImages>
           {artists?.map((art, i) => (
@@ -177,6 +177,10 @@ const GlobalStyle = createGlobalStyle`
     padding: 0;
     box-sizing: border-box;
     scroll-behavior: smooth;
+    ::-webkit-scrollbar {
+    display: none;
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
   }
 
   body {
@@ -212,15 +216,18 @@ const WrapperImages = styled.section`
   }
 `;
 const BTN = styled.section`
-  opacity: 0;
+  opacity: 1;
   border: solid 1px #002efc;
-  width: 50px;
-  height: 50px;
+  width: 40px;
+  height: 40px;
   position: fixed;
   bottom: 10px;
-  right: 10px;
+  right: 1.5rem;
   border-radius: 5px;
   transition: all 0.3s ease-in-out;
+  @media screen and (max-width: 800px) {
+    right: 5px;
+  }
 
   cursor: pointer;
   &:hover {

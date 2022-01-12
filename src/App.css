@@ -15,15 +15,13 @@
   src: local('Supply-Regular'), url(./fonts/Supply-Regular.woff2) format('woff2');
 }
 @font-face {
-  font-family: 'CharlevoixPro-Bold';
-  src: local('CharlevoixPro-Bold'), url(./fonts/src/fonts/CharlevoixPro-Bold.woff2) format('woff2');
+  font-family: 'Swiss721BT-BlackCondensed';
+  src: local('Swiss721BT-BlackCondensed'), url(./fonts/Swiss721BT-BlackCondensed.woff2.woff) format('woff2');
 }
 @font-face {
-  font-family: 'Swiss721BT-BlackCondensed';
-  src: local('Swiss721BT-BlackCondensed'), url(./fonts/src/fonts/Swiss721BT-BlackCondensed.woff2.woff) format('woff2');
+  font-family: 'ABCMarfa-Light-Trial';
+  src: local('ABCMarfa-Light-Trial'), url(./fonts/ABCMarfa-Light-Trial.woff2) format('woff2');
 }
-
-
 
 
 
