@@ -208,7 +208,7 @@ const ArtCards = styled.div`
     width: 90%;
     left: 0%;
     text-align: center;
-    transform: translateX(1.5%);
+    transform: translateX(1%);
     margin-top: 1rem;
     margin: 0 auto;
     padding: 2rem;
