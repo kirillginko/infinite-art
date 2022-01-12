@@ -138,81 +138,80 @@ function App() {
 
   return (
     <>
-      <Heading />
       <GlobalStyle />
-      <InfiniteScroll
-        dataLength={artists.length}
-        next={fetchArtists}
-        hasMore={true}
-        loader={<Loader />}
-        scrollThreshold={0.8}
-      >
-        <WrapperImages>
-          {artists?.map((art, i) => (
-            <ArtResults
-              id={art?.id}
-              name={art?.artist_display}
-              title={art?.title}
-              image={art?.image_id}
-              i={i}
-              key={i}
-              loading={loading}
-              className="box"
-            />
-          ))}
-        </WrapperImages>
-      </InfiniteScroll>
-      <WebsiteInfo />
-      <BTN onClick={() => topFunction()}>
-        <Arrow></Arrow>
-      </BTN>
+      <Heading />
+      <Container>
+        <InfiniteScroll
+          dataLength={artists.length}
+          next={fetchArtists}
+          hasMore={true}
+          loader={<Loader />}
+          scrollThreshold={0.8}
+        >
+          <ArtCards>
+            {artists?.map((art, i) => (
+              <ArtResults
+                id={art?.id}
+                name={art?.artist_display}
+                title={art?.title}
+                image={art?.image_id}
+                i={i}
+                key={i}
+                loading={loading}
+                className="box"
+              />
+            ))}
+          </ArtCards>
+        </InfiniteScroll>
+        <BTN onClick={() => topFunction()}>
+          <Arrow></Arrow>
+        </BTN>
+      </Container>
     </>
   );
 }
 
 // Style
 const GlobalStyle = createGlobalStyle`
-  * {
+ *{
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     scroll-behavior: smooth;
-    ::-webkit-scrollbar {
-    display: none;
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none;  /* Firefox */
-  }
-
-  body {
-  }
-  h1{
+    overflow-x: hidden;
+ }
+ h1{
     font-family: 'Supply-UltraLight', sans-serif;
     font-size: .75rem;
-    margin-top: 1rem;
-    max-width: 25rem;
   }
   p{
     font-family: 'Supply-UltraLight', sans-serif;
-    margin-top: .3rem;
     font-size: .8rem;
-    max-width: 25rem;
-  }
-  img{
-    padding: .5rem;
-    @media screen and (max-width: 800px) {
-    padding: 0rem;
-  }
+
   }
 `;
 
-const WrapperImages = styled.section`
+const Container = styled.div`
+  max-width: 100%;
+`;
+
+const ArtCards = styled.div`
   display: flex;
+  flex-direction: row;
   flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 10rem;
   text-align: center;
-  margin-top: 12rem;
-  overflow: hidden;
   @media screen and (max-width: 800px) {
-    margin-top: 0rem;
+    display: inline-block;
+    position: relative;
+    width: 90%;
+    left: 0%;
+    text-align: center;
+    transform: translateX(3%);
+    margin-top: 1rem;
+    margin: 0 auto;
+    padding: 2rem;
   }
 `;
 const BTN = styled.section`

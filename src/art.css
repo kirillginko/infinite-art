@@ -1,0 +1,54 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    scroll-behavior: smooth;
+    ::-webkit-scrollbar {
+    display: none;
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+
+  body {
+    display: flex;
+    justify-content: center;
+    overflow-x: hidden;
+  }
+  h1{
+    font-family: 'Supply-UltraLight', sans-serif;
+    font-size: .75rem;
+    margin-top: 1rem;
+    max-width: 25rem;
+  }
+  p{
+    font-family: 'Supply-UltraLight', sans-serif;
+    margin-top: .3rem;
+    font-size: .8rem;
+    max-width: 25rem;
+  }
+  img{
+    padding: .5rem;
+    @media screen and (max-width: 800px) {
+    padding: 0rem;
+  }
+  h1{
+    font-family: 'Supply-UltraLight', sans-serif;
+    font-size: .75rem;
+    margin-top: 1rem;
+    max-width: 25rem;
+  }
+  p{
+    font-family: 'Supply-UltraLight', sans-serif;
+    margin-top: .3rem;
+    font-size: .8rem;
+    max-width: 25rem;
+    @media screen and (max-width: 800px) {
+      max-width: 25rem;
+  }
+  }
+  img{
+    padding: .5rem;
+    @media screen and (max-width: 800px) {
+      max-width: 80%;
+    padding: 0rem;
+  }

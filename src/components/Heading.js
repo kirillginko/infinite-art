@@ -6,10 +6,10 @@ const Header = styled(motion.header)`
   position: fixed;
   top: 0;
   left: 0;
+  margin-left: 1rem;
+  margin-top: 1rem;
   max-width: 70rem;
-  margin-left: 3.6rem;
   color: #002efc;
-  text-align: left;
   z-index: 10;
   cursor: grab;
   transition: filter 0.6s ease-in-out;
@@ -21,29 +21,27 @@ const Header = styled(motion.header)`
   }
   @media screen and (max-width: 800px) {
     position: relative;
-    margin: 2rem 4rem;
-    text-align: center;
+    margin-left: 0rem;
   }
 `;
 
 const H1 = styled(motion.h1)`
   font-family: "ABCMarfa-Light-Trial", sans-serif;
   margin-bottom: 0.8rem;
-  font-size: 2.5rem;
+  font-size: 3.5rem;
   font-weight: 100;
   letter-spacing: -1px;
-  max-width: 100rem;
   @media screen and (max-width: 800px) {
     font-size: 2rem;
+    text-align: center;
   }
 `;
 const P1 = styled(motion.p)`
   font-family: "ObjectSans-Regular", sans-serif;
   font-size: 0.7rem;
-  margin-left: 0.1rem;
   @media screen and (max-width: 800px) {
     font-size: 0.7rem;
-    margin-left: 0rem;
+    text-align: center;
   }
 `;
 const Span = styled.span`

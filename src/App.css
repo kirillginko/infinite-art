@@ -1,7 +1,4 @@
-/* @font-face {
-  font-family: 'PPWoodland-Regular';
-  src: local('PPWoodland-Regular'), url(./fonts/PPWoodland-Regular.woff2) format('woff2');
-} */
+
 @font-face {
   font-family: 'ObjectSans-Regular';
   src: local('ObjectSans-Regular'), url(./fonts/ObjectSans-Regular.woff2) format('woff2');
@@ -22,56 +19,3 @@
   font-family: 'ABCMarfa-Light-Trial';
   src: local('ABCMarfa-Light-Trial'), url(./fonts/ABCMarfa-Light-Trial.woff2) format('woff2');
 }
-
-
-
-/* *{
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-.App{
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  flex-wrap: wrap;
-  margin: 2rem;
-  margin-top: 4rem;
-  text-align: center;
-}
-.title{
-  font-size: .8rem;
-  padding: 1rem;
-}
-.name{
-  font-size: 1rem;
-}
-.card{
-  padding: .5rem;
-}
-.Title__text{
-  position: fixed;
-  text-align: left;
-  top: 0;
-  padding-left: 2rem;
-  cursor: pointer;
-  color: blue;
-}
-.blur{
-display: none;
-}
-.Title__text:hover{
-  filter: blur(3px);
-  transition: filter .6s ease-in-out;
-}
-
-@media only screen and (max-width: 700px) {
-  .Title__text {
-    position: fixed;
-    top: 0%;
-    left: 50%;
-    transform: translatex(-50%);
-    text-align: center;
-    padding: 0rem;
-  }
-} */
