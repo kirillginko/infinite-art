@@ -40,6 +40,7 @@ const Card = styled(motion.div)`
   height: 100%;
   margin-top: 1rem;
   @media screen and (max-width: 800px) {
+    /* margin-left: -4rem; */
   }
 `;
 const H1 = styled.h1`
