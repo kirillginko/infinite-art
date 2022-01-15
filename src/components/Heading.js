@@ -21,7 +21,7 @@ const Header = styled(motion.header)`
   }
   @media screen and (max-width: 800px) {
     position: relative;
-    margin-left: 0rem;
+    margin: 2rem auto;
   }
 `;
 
