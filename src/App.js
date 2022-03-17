@@ -12,7 +12,7 @@ import {
 import { Heading } from "./components/Heading";
 import Loader from "./components/Loader";
 import ArtResults from "./components/ArtResults";
-import WebsiteInfo from "./components/WebsiteInfo";
+import CursorEffect from "./components/CursorEffect";
 import styled from "styled-components";
 import { createGlobalStyle } from "styled-components";
 import { topFunction, shuffle, getRandom } from "./hooks";
@@ -140,7 +140,11 @@ function App() {
     <>
       <GlobalStyle />
       <Heading />
-      <Container>
+      <CursorEffect
+        element={document.querySelector("container")}
+        type="ghost"
+      ></CursorEffect>
+      <Container id="container">
         <InfiniteScroll
           dataLength={artists.length}
           next={fetchArtists}
@@ -189,6 +193,10 @@ const GlobalStyle = createGlobalStyle`
     font-size: .8rem;
 
   }
+  .circleContainer {
+  position: absolute;
+  right: 10px;
+}
 `;
 
 const Container = styled.div`

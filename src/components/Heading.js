@@ -61,7 +61,7 @@ export const Heading = () => {
       dragConstraints={{
         top: -2,
         left: -2,
-        right: 1300,
+        right: 1420,
         bottom: 750,
       }}
       dragTransition={{
