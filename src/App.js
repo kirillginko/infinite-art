@@ -213,13 +213,11 @@ const ArtCards = styled.div`
   @media screen and (max-width: 800px) {
     display: inline-block;
     position: relative;
-    width: 90%;
-    left: 0%;
-    text-align: center;
-    transform: translateX(1%);
+    width: 93%;
     margin-top: 1rem;
-    margin: 0 auto;
-    padding: 2rem;
+    margin: 2rem auto;
+    /* margin: 0 0.5rem; */
+    /* padding: 2rem; */
   }
 `;
 const BTN = styled.section`
